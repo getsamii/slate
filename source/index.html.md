@@ -29,7 +29,7 @@ This example API documentation page was created with [Slate](https://github.com/
 
 > To authorize, use this code:
 
-```ruby
+<!-- ```ruby
 require 'kittn'
 
 api = Kittn::APIClient.authorize!('meowmeowmeow')
@@ -59,135 +59,88 @@ Kittn uses API keys to allow access to the API. You can register a new Kittn API
 
 Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+`Authorization: meowmeowmeow` -->
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+API will need to be validated using <code>API key</code>.
 </aside>
 
-# Kittens
+# Questions
 
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
+## Get list of profile questions
 
 > The above command returns JSON structured like this:
 
 ```json
 [
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
+    "question_id": "unique_question_identifier_A",
+    "question_text": "Do you like this question?"
   },
   {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+    "question_id": "unique_question_identifier_B",
+    "question_text": "How about this question?"
   }
 ]
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all questions.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET http://<<samii_api_url>>.com/questions/all`
 
 ### Query Parameters
 
 Parameter | Default | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+-- | -- | -- 
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+Retrieving update version of profile questions to be performed by SQL query on the backend.
 </aside>
 
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
+## Submit response for student profile question
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "student_id": 2,
+  "question_id": "unique_question_identifier_A",
+  "question_answer": 5
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+Endpoint submits a student response to a question.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`POST http://<<samii_api_url>>.com/questions/response`
 
-### URL Parameters
+API responds with score from data model if sufficient questions have been answered
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+OR
 
-## Delete a Specific Kitten
+generic response awaiting further data gathering.
+
+### API response
+
+```json
+{
+  "student_id": 2,
+  "sufficient": true,
+  "profile_score": 1.7642
+}
+```
+
+```json
+{
+  "student_id": 2,
+  "sufficient": false,
+  "profile_score": 0
+}
+```
+
+<!-- ## Post answer to question
 
 ```ruby
 require 'kittn'
@@ -236,4 +189,4 @@ This endpoint deletes a specific kitten.
 Parameter | Description
 --------- | -----------
 ID | The ID of the kitten to delete
-
+ -->

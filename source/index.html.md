@@ -8,7 +8,6 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Authentication Key</a>
   - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -23,43 +22,44 @@ Welcome to the Samii API Documentation! Used for developing standard API contrac
 
 We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+This example API documentation page was created with [Slate](https://github.com/lord/slate).
 
 # Authentication
 
-> To authorize, use this code:
+> To authorize, use this code: 
 
-<!-- ```ruby
-require 'kittn'
+```shell
+API_KEY="API_KEY"
+```
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+```ruby
+require 'API_KEY'
+
+api = Kittn::APIClient.authorize!(API_KEY)
 ```
 
 ```python
-import kittn
+import API_KEY
 
-api = kittn.authorize('meowmeowmeow')
+api = kittn.authorize(API_KEY)
 ```
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl "https://<<SAMII_API_URL>>"
+  -H "Authorization: API_KEY"
 ```
 
 ```javascript
-const kittn = require('kittn');
+const API_KEY = ENV['API_KEY'];
 
-let api = kittn.authorize('meowmeowmeow');
 ```
 
 > Make sure to replace `meowmeowmeow` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+API key must be included in all API requests to the server in a header that looks like the following:
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow` -->
+`Authorization: API_KEY`
 
 <aside class="notice">
 API will need to be validated using <code>API key</code>.
@@ -69,7 +69,7 @@ API will need to be validated using <code>API key</code>.
 
 ## Get list of profile questions
 
-> The above command returns JSON structured like this:
+> GET /profile/questions/all_active:
 
 ```json
 [
@@ -84,17 +84,11 @@ API will need to be validated using <code>API key</code>.
 ]
 ```
 
-This endpoint retrieves all questions.
+This endpoint retrieves all active questions.
 
 ### HTTP Request
 
-`GET http://<<samii_api_url>>.com/questions/all`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
--- | -- | -- 
+`GET http://<<samii_api_url>>.com/profile/questions/all_active`
 
 <aside class="success">
 Retrieving update version of profile questions to be performed by SQL query on the backend.
@@ -102,9 +96,11 @@ Retrieving update version of profile questions to be performed by SQL query on t
 
 ## Submit response for student profile question
 
+> POST /profile/questions/response:
+
 ```json
 {
-  "student_id": 2,
+  "student_id": "unique_student_identifier_A",
   "question_id": "unique_question_identifier_A",
   "question_answer": 5
 }
@@ -114,27 +110,31 @@ Endpoint submits a student response to a question.
 
 ### HTTP Request
 
-`POST http://<<samii_api_url>>.com/questions/response`
+`POST http://<<samii_api_url>>.com/profile/questions/response`
 
-API responds with score from data model if sufficient questions have been answered
+API responds with score from data model if sufficient questions have been answered OR generic response awaiting further data gathering.
 
-OR
-
-generic response awaiting further data gathering.
-
-### API response
+> Response from backend API after POST /profile/questions/response:
 
 ```json
+/* 
+  Submitted when sufficient number of questions
+  have been answered above established threshold
+*/
 {
-  "student_id": 2,
+  "student_id": "unique_student_identifier_A",
   "sufficient": true,
   "profile_score": 1.7642
 }
 ```
 
 ```json
+/* 
+  Submitted when insufficient number of questions
+  have been answered to give accurate profile_score
+*/
 {
-  "student_id": 2,
+  "student_id": "unique_student_identifier_A",
   "sufficient": false,
   "profile_score": 0
 }
